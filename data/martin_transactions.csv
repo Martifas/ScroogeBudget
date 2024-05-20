@@ -1,0 +1,8 @@
+transaction_type,date,amount
+Income,2024-05-20,100
+Income,2024-05-20,1500
+Savings,2024-05-20,100
+Income,2024-05-20,150
+Expense,2024-05-20,80
+Expense,2024-05-20,30
+Savings,2024-05-20,50
