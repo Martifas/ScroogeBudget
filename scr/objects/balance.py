@@ -85,37 +85,36 @@ class Balance:
         n = input("Would you like to deposit or withdraw?: ").strip().lower()
         if n == "deposit":
             self.amount = int(input("How much to deposit? "))
-            balance_or_extra = (
-                input("Should this amount be taken from existing balance Y/N? :")
-                .strip()
-                .lower()
-            )
-            self.savings += self.amount
-            self.update_balance_savings("savings")
-            message = f"{self.amount} added to savings"
-            if balance_or_extra == "y":
-                if self.amount > self.balance:
-                    message = f"Not enough in balance account ({self.balance})"
-                    return message
-                else:
-                    self.balance -= self.amount
-                    self.update_balance_savings("balance")
+            if self.amount > self.balance:
+                message = f"Account balance ({self.balance}) is too low for the operation"
+                
+            else:
+                self.savings += self.amount    
+                self.balance -= self.amount
+                message = f"{self.amount} added to savings and removed from account"
+                self.add_transactions(transaction_mode="savings")
+                self.amount = 0 - self.amount
+                self.add_transactions(transaction_mode="expense")
 
         elif n == "withdraw":
             self.amount = int(input("How much to withdraw?: "))
             if self.amount > self.savings:
                 message = f"Not enough in savings account ({self.savings})"
-                return message
+    
             else:
                 self.savings -= self.amount
-                message = f"{self.amount} taken from savings"
+                self.balance += self.amount
+                message = f"{self.amount} taken from savings and added to account"
+                self.add_transactions(transaction_mode="income")
+                self.amount = 0 - self.amount
+                self.add_transactions(transaction_mode="savings")
+                
         else:
             message = "Error: incorrect input"
-            return message
-
-        self.transaction_type = "savings"
-        self.add_transactions(transaction_mode="savings")
+            
+        
         self.update_balance_savings("savings")
+        self.update_balance_savings("balance")
         return message
 
 
