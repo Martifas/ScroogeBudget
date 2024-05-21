@@ -179,19 +179,30 @@ class Balance:
                 writer = csv.writer(write_file)
                 writer.writerows(rows)
 
-    def add_transactions(self, transaction_mode: str) -> None:
+    def add_transactions(self, transaction_mode: str) -> None: #Adjust so it will save not on one date but also according to income/expense/savings
         with open(self.transactions_file_path, "r", newline="") as file:
             reader = csv.reader(file)
             rows = list(reader)
 
-        rows.append(
-            [
-                f"{transaction_mode.title()}",
-                datetime.date.today(),
-                self.amount,
-            ]
-        )
+        current_date = datetime.date.today().strftime(locale.YEAR_MONTH)
+        file_holder = []
+
+        for row in rows:
+            if row[1] == current_date:
+                existing_amount = row[2]
+                row[2] = int(existing_amount) + int(self.amount)
+                file_holder.append(row)
+            
+            else:
+                print("PYZDA")
+                ''' file_holder.append(
+                    [
+                        f"{transaction_mode.title()}",
+                        current_date,
+                        self.amount,
+                    ]
+                )'''
 
         with open(self.transactions_file_path, "w", newline="") as write_file:
             writer = csv.writer(write_file)
-            writer.writerows(rows)
+            writer.writerows(file_holder)
