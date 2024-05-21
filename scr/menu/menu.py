@@ -22,8 +22,8 @@ def menu_handling(message: str = None, username: str = None) -> None:
 
 def menu(message: str = None) -> str:
     modes = locale.MENU_MODES
-    output_string = locale.MENU_TITLE
-    mode = menu_compiler(modes, output_string, message)
+    title = locale.MENU_TITLE
+    mode = menu_compiler(modes, title, message)
     return mode
 
 def mode_select(mode: str, username: str = None) -> None:
@@ -51,14 +51,14 @@ def mode_select(mode: str, username: str = None) -> None:
 
 
 def options():
-    modes = ["Change message/error separator", "Change messages to uppercase, lowercase or titlecase"]
-    output_string = "OPTIONS"
-    mode = menu_compiler(modes, output_string)
+    modes = locale.OPTIONS_MODES
+    title = locale.OPTIONS_TITLE
+    mode = menu_compiler(modes, title)
     if mode == "1":
         message = select_separator()
     elif mode == "2":
         case = case_changer()
-        message = f"Messages set to {case} mode"
+        message = locale.OPTIONS_MESSAGE + case #Need to check if working
     else:
-        print('Select by entering "1" or "2"')
+        message = locale.OPTIONS_ERROR
     return message

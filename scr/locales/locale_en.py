@@ -17,4 +17,8 @@ ERROR_CREATING_FILE = "Error creating profile file"
 
 MAIN_EXIT = "|PROGRAM CLOSED|"
 
+OPTIONS_MODES = ["Change message/error separator", "Change messages to uppercase, lowercase or titlecase"]
+OPTIONS_TITLE = "OPTIONS"
+OPTIONS_MESSAGE = "Messages set to "
+OPTIONS_ERROR = "Error: Select by entering '1' or '2'"
 
