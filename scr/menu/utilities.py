@@ -2,6 +2,7 @@ import csv
 from typing import List, Tuple
 from pathlib import Path
 import re
+import scr.locales.locale_en as locale
 
 
 separator = "-"
@@ -10,32 +11,30 @@ case_chgr = "upper"
 
 def select_separator() -> str:
     global separator
-    user_input = input("Select one character to use as separator in menu: ")
+    user_input = input(locale.UTILITIES_SEPARATOR_INPUT)
     separator_match = re.search(r"^.$", user_input)
     if separator_match:
         separator = user_input
-        message = f"Separator {separator} set"
+        message = locale.UTILITIES_SEPARATOR_SET + separator
     else:
-        message = "Error: input 1 any character"
+        message = locale.UTILITIES_SEPARATOR_ERROR
 
     return message
 
 
 def case_changer() -> str:
     global case_chgr
-    case = input(
-        "Do you want the messages to be in lowercase, uppercase or titlecase?: "
-    ).lower()
-    if case == "lowercase":
+    case = input(locale.UTILITIES_CASE_INPUT).lower()
+    if case == locale.UTILITIES_LOWERCASE:
         case_chgr = "lower"
-    elif case == "uppercase":
+    elif case == locale.UTILITIES_UPPERCASE:
         case_chgr = "upper"
-    elif case == "titlecase":
+    elif case == locale.UTILITIES_TITLECASE:
         case_chgr = "title"
     else:
-        print("Invalid input, setting to uppercase by default.")
+        print(locale.UTILITIES_CASE_ERROR)
         case_chgr = "upper"
-    return case_chgr
+    return case
 
 
 def message_compiler(message_string: str) -> str:
@@ -58,5 +57,5 @@ def menu_compiler(modes, output_string, message=None) -> str:
     print(menu)
     if message is not None:
         print(message_compiler(message))
-    mode = input("SELECT MODE: ").lower().strip()
+    mode = input(locale.SELECT_MODE).lower().strip()
     return mode
