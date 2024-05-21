@@ -46,7 +46,7 @@ class Balance:
             case _ if mode in  locale.BALANCE_MODE_1:
                 message_string = self.validate_transaction()
             case _ if mode in locale.BALANCE_MODE_2:
-                message_string = locale.BALANCE_BALANCE + self.balance
+                message_string = locale.BALANCE_BALANCE + str(self.balance)
             case _ if mode in locale.BALANCE_MODE_3:
                 self.savings_menu()
                 return
@@ -71,7 +71,7 @@ class Balance:
             case _ if mode in locale.SAVINGS_MODE_1:
                 message = self.savings_deposit_withdraw()
             case _ if mode in locale.SAVINGS_MODE_2:
-                message = locale.SAVINGS_BALANCE + self.savings
+                message = locale.SAVINGS_BALANCE + str(self.savings)
             case _ if mode in locale.SAVINGS_MODE_3:
                 message = self.calculate_savings()
             case locale.BACK:
@@ -84,15 +84,17 @@ class Balance:
 
     def savings_deposit_withdraw(self) -> str:
         n = input(locale.SAVINGS_DEPOSIT_WITHDRAW).strip().lower()
-        if n == locale.DEPOSIT:
+        if n == locale.BACK:
+            self.savings_menu()
+        elif n == locale.DEPOSIT:
             self.amount = int(input(locale.SAVINGS_AMOUNT_DEPOSIT))
             if self.amount > self.balance:
-                message = locale.BALANCE_TOO_LOW + self.balance
+                message = locale.BALANCE_TOO_LOW + str(self.balance)
                 
             else:
                 self.savings += self.amount    
                 self.balance -= self.amount
-                message = self.amount + locale.SAVINGS_ADDED_BALANCE_REMOVED
+                message = str(self.amount) + locale.SAVINGS_ADDED_BALANCE_REMOVED
                 self.add_transactions(transaction_mode="savings")
                 self.amount = 0 - self.amount
                 self.add_transactions(transaction_mode="expense")
@@ -105,7 +107,7 @@ class Balance:
             else:
                 self.savings -= self.amount
                 self.balance += self.amount
-                message = self.amount + locale.SAVINGS_REMOVED_BALANCE_ADDED
+                message = str(self.amount) + locale.SAVINGS_REMOVED_BALANCE_ADDED
                 self.add_transactions(transaction_mode="income")
                 self.amount = 0 - self.amount
                 self.add_transactions(transaction_mode="savings")
@@ -120,28 +122,37 @@ class Balance:
 
 
     def savings_goal(self) -> int:
-        savings_goal = int(input(locale.SAVINGS_GOAL_PERCENTAGE))
-        data = Stats(self.username).income_stats()[0]
-        current_month = datetime.date.today().strftime(locale.YEAR_MONTH)
-        if current_month in data:
-            savings_goal_amount = int(data[current_month] * (savings_goal / 100))
-            return int(savings_goal_amount)
-        else:
-            print(locale.ERROR_NO_DATA)
-            return
+        try:
+            savings_goal = input(locale.SAVINGS_GOAL_PERCENTAGE)
+            if savings_goal == locale.BACK:
+                self.savings_menu()
+            else:
+                data = Stats(self.username).income_stats()[0]
+                current_month = datetime.date.today().strftime(locale.YEAR_MONTH)
+                if current_month in data:
+                    savings_goal_amount = int(data[current_month] * (savings_goal / 100))
+                    return int(savings_goal_amount)
+                else:
+                    print(locale.ERROR_NO_DATA)
+                    self.savings_goal()
+        except (TypeError, ValueError):
+            print(locale.ERROR_WRONG_INPUT)
+            self.savings_goal()
 
     def calculate_savings(self):
         savings_goal_amount = self.savings_goal()
-        message = (f"\n{locale.SAVINGS_THIS_MONTH}: {self.savings}\n"
-           f"{locale.SAVINGS_MONTHLY_GOAL}: {savings_goal_amount}\n"
+        message = (f"{locale.SAVINGS_THIS_MONTH}: {self.savings}\n"
+           f"{locale.SAVINGS_THIS_MONTH}: {savings_goal_amount}\n"
            f"{locale.SAVINGS_ACHIEVED}: {int((self.savings / savings_goal_amount) * 100)}%")
         return message
         
 
     def validate_transaction(self) -> str:
         transaction_mode = input(locale.INCOME_EXPENSE).lower().strip()
+        if transaction_mode == locale.BACK:
+            self.balance_menu()
         self.amount = input(locale.BALANCE_RECORD_AMOUNT)
-        if transaction_mode == locale.BACK or self.amount == locale.BACK:
+        if self.amount == locale.BACK:
             self.balance_menu()
         elif transaction_mode == locale.EXPENSE:
             message_string = self.expense(int(self.amount))
