@@ -1,5 +1,6 @@
 MENU_MODES = ["Balance & Savings", "Forecast", "Statistics", "Profile", "Options", "Exit"]
 MENU_TITLE = "MAIN MENU"
+SELECT_MODE = "Select mode: "
 
 MENU_HANDLING_MODES = ["1", "2", "3", "4", "5", "6", "budget", "forecast", "statistics", "profile", "options", "exit"]
 MENU_HANDLING_MODES_WITHOUT_PROFILE = ["4", "profile", "5", "options", "6", "exit"]
@@ -22,3 +23,11 @@ OPTIONS_TITLE = "OPTIONS"
 OPTIONS_MESSAGE = "Messages set to "
 OPTIONS_ERROR = "Error: Select by entering '1' or '2'"
 
+UTILITIES_SEPARATOR_INPUT = "Select one character to use as separator in menu: " 
+UTILITIES_SEPARATOR_SET = "Separator set: "
+UTILITIES_SEPARATOR_ERROR = "Error: input 1 of any character"
+UTILITIES_CASE_INPUT = "Do you want the messages to be in lowercase, uppercase or titlecase?: "
+UTILITIES_LOWERCASE = "lowercase"
+UTILITIES_UPPERCASE = "uppercase"
+UTILITIES_TITLECASE = "titlecase"
+UTILITIES_CASE_ERROR = "Error: invalid input, setting to uppercase by default"
