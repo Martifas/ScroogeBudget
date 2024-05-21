@@ -1,7 +1,7 @@
 import scr.locales.locale_en as locale
 from scr.menu.utilities import menu_compiler, select_separator, case_changer
-from scr.objects.balance import Balance
-from scr.objects.username import profile_option
+from scr.menu.balance import Balance
+from scr.menu.username import profile_option
 
 
 balance = None
