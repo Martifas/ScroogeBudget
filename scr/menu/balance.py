@@ -14,9 +14,12 @@ class Balance:
         self.savings = int(self.profile_data[1][1])
         self.balance = int(self.profile_data[1][0])
         base_path = os.path.dirname(os.path.abspath(__file__))
-        data_path = os.path.join(base_path, '..', '..', 'data')
+        data_path = os.path.join(base_path, "..", "..", "data")
         self.profile_file_path = os.path.join(data_path, f"user_{self.username}.csv")
-        self.transactions_file_path = os.path.join(data_path, f"{self.username}_transactions.csv")
+        self.transactions_file_path = os.path.join(
+            data_path, f"{self.username}_transactions.csv"
+        )
+        self.transactions_data = read_profile_file(self.username, transactions=True)[0]
 
     def income(self, n: int) -> str:
         self.balance += n
@@ -43,7 +46,7 @@ class Balance:
 
     def select_balance_mode(self, mode: str) -> None:
         match mode:
-            case _ if mode in  locale.BALANCE_MODE_1:
+            case _ if mode in locale.BALANCE_MODE_1:
                 message_string = self.validate_transaction()
             case _ if mode in locale.BALANCE_MODE_2:
                 message_string = locale.BALANCE_BALANCE + str(self.balance)
@@ -90,62 +93,67 @@ class Balance:
             self.amount = int(input(locale.SAVINGS_AMOUNT_DEPOSIT))
             if self.amount > self.balance:
                 message = locale.BALANCE_TOO_LOW + str(self.balance)
-                
+
             else:
-                self.savings += self.amount    
+                self.savings += self.amount
                 self.balance -= self.amount
                 message = str(self.amount) + locale.SAVINGS_ADDED_BALANCE_REMOVED
                 self.add_transactions(transaction_mode="savings")
-                self.amount = 0 - self.amount
-                self.add_transactions(transaction_mode="expense")
+                self.amount = -self.amount
+                self.add_transactions(transaction_mode="income")
 
         elif n == locale.WITHDRAW:
             self.amount = int(input(locale.SAVINGS_AMOUNT_WITHDRAW))
             if self.amount > self.savings:
-                message = locale.SAVINGS_TOO_LOW + self.savings
-    
+                message = locale.SAVINGS_TOO_LOW + str(self.savings)
+
             else:
                 self.savings -= self.amount
                 self.balance += self.amount
                 message = str(self.amount) + locale.SAVINGS_REMOVED_BALANCE_ADDED
                 self.add_transactions(transaction_mode="income")
-                self.amount = 0 - self.amount
+                self.amount = -self.amount
                 self.add_transactions(transaction_mode="savings")
-                
+
         else:
             message = locale.ERROR_WRONG_INPUT
-            
-        
+
         self.update_balance_savings("savings")
         self.update_balance_savings("balance")
         return message
 
+    def get_transaction_amount(self, mode: str) -> str:
+        current_month = datetime.date.today().strftime(locale.YEAR_MONTH)
+        for row in self.transactions_data:
+            if row[0] == mode and row[1] == current_month:
+                return row[2]
+        message = message = locale.ERROR_NO_DATA
+        self.savings_menu(message=message)
 
-    def savings_goal(self) -> int:
+    def example(self) -> int: #review names of functions
         try:
-            savings_goal = input(locale.SAVINGS_GOAL_PERCENTAGE)
-            if savings_goal == locale.BACK:
+            savings_goal_percent = input(locale.SAVINGS_GOAL_PERCENTAGE)
+            if savings_goal_percent == locale.BACK:
                 self.savings_menu()
-            else:
-                data = Stats(self.username).income_stats()[0]
-                current_month = datetime.date.today().strftime(locale.YEAR_MONTH)
-                if current_month in data:
-                    savings_goal_amount = int(data[current_month] * (savings_goal / 100))
-                    return int(savings_goal_amount)
-                else:
-                    print(locale.ERROR_NO_DATA)
-                    self.savings_goal()
-        except (TypeError, ValueError):
-            print(locale.ERROR_WRONG_INPUT)
-            self.savings_goal()
+            monthly_income = int(self.get_transaction_amount("income"))
+            monthly_savings_goal = int(
+                monthly_income * (int(savings_goal_percent) / 100)
+            )
+            return monthly_savings_goal
+
+        except ValueError:
+            message = locale.ERROR_WRONG_INPUT
+            self.savings_menu(message=message)
 
     def calculate_savings(self):
-        savings_goal_amount = self.savings_goal()
-        message = (f"{locale.SAVINGS_THIS_MONTH}: {self.savings}\n"
-           f"{locale.SAVINGS_THIS_MONTH}: {savings_goal_amount}\n"
-           f"{locale.SAVINGS_ACHIEVED}: {int((self.savings / savings_goal_amount) * 100)}%")
+        monthly_savings_goal = self.example()
+        monthly_savings = monthly_savings = int(self.get_transaction_amount("savings"))
+        message = (
+            f"{locale.SAVINGS_THIS_MONTH}: {monthly_savings}\n"
+            f"{locale.SAVINGS_GOALS_MESSAGE}: {monthly_savings_goal}\n"
+            f"{locale.SAVINGS_ACHIEVED}: {int((monthly_savings / monthly_savings_goal) * 100)}%"
+        )
         return message
-        
 
     def validate_transaction(self) -> str:
         transaction_mode = input(locale.INCOME_EXPENSE).lower().strip()
@@ -161,8 +169,8 @@ class Balance:
             message_string = self.income(int(self.amount))
             self.add_transactions(transaction_mode)
         else:
-            print(locale.BALANCE_ERROR_VALIDATE)
-            self.validate_transaction()
+            message_string = locale.BALANCE_ERROR_VALIDATE
+
         return message_string
 
     def update_balance_savings(self, n) -> None:
@@ -179,30 +187,27 @@ class Balance:
                 writer = csv.writer(write_file)
                 writer.writerows(rows)
 
-    def add_transactions(self, transaction_mode: str) -> None: #Adjust so it will save not on one date but also according to income/expense/savings
-        with open(self.transactions_file_path, "r", newline="") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
-
+    def add_transactions(self, transaction_mode: str) -> None:
         current_date = datetime.date.today().strftime(locale.YEAR_MONTH)
-        file_holder = []
+        transaction_found = False
+
+        try:
+            with open(self.transactions_file_path, "r", newline="") as file:
+                reader = csv.reader(file)
+                rows = list(reader)
+        except FileNotFoundError:
+            rows = []
 
         for row in rows:
-            if row[1] == current_date:
+            if row[1] == current_date and transaction_mode == row[0]:
                 existing_amount = row[2]
-                row[2] = int(existing_amount) + int(self.amount)
-                file_holder.append(row)
-            
-            else:
-                print("PYZDA")
-                ''' file_holder.append(
-                    [
-                        f"{transaction_mode.title()}",
-                        current_date,
-                        self.amount,
-                    ]
-                )'''
+                row[2] = str(int(existing_amount) + int(self.amount))
+                transaction_found = True
+                break
+
+        if not transaction_found:
+            rows.append([transaction_mode, current_date, str(self.amount)])
 
         with open(self.transactions_file_path, "w", newline="") as write_file:
             writer = csv.writer(write_file)
-            writer.writerows(file_holder)
+            writer.writerows(rows)

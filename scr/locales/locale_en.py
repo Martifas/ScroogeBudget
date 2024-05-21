@@ -68,7 +68,7 @@ SAVINGS_REMOVED_BALANCE_ADDED = " taken from savings and added to account"
 SAVINGS_GOAL_PERCENTAGE = "How much % of monthly income would you like to save? "
 SAVINGS_THIS_MONTH = "Saved this month"
 SAVINGS_ACHIEVED = "Achieved"
-SAVINGS_GOALS_MESSAGE = 'Monthly goals'
+SAVINGS_GOALS_MESSAGE = 'Monthly goal'
 
 STATS_MODES = ["Income/expense stats", "Savings stats"]
 STATS_TITLE = "statistics menu"

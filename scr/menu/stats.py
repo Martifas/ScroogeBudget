@@ -18,20 +18,17 @@ class Stats:
         menu_compiler(modes, stats_title)
 
 
-    def extract_monthly_amount(self, transaction_type):
-        data = {}
+    '''def extract_monthly_amount(self, transaction_type):
+        current_date = datetime.date.today().strftime(locale.YEAR_MONTH)
+        
         for row in self.transactions_data:
-            if row[0] == transaction_type:
-                date_obj = datetime.datetime.strptime(row[1], "%Y-%m-%d").date()
-                year_month = date_obj.strftime(locale.YEAR_MONTH)
-                amount = int(row[2])
-                if year_month in data:
-                    data[year_month] += amount
-                else:
-                    data[year_month] = amount
+            if row[0] == transaction_type and row[1] == current_date:
+                monthly_amount = row[2]
+            else:
+                
 
-        data_list = [[key, value] for key, value in data.items()]
-        return data, data_list
+        
+            return monthly_amount'''
 
     def compile_stats(self):
         data_list = self.savings_stats()[1]
@@ -40,14 +37,14 @@ class Stats:
         return message
 
     def income_stats(self):
-        data, data_list = self.extract_monthly_amount("Income")
+        data, data_list = self.extract_monthly_amount("income")
         return data, data_list
 
     def savings_stats(self):
-        data, data_list = self.extract_monthly_amount("Savings")
+        data, data_list = self.extract_monthly_amount("savings")
         return data, data_list
 
-    def show_stats(self, data_list) -> None:
+    def show_stats(self, data_list) -> None: #need to remake based that extract_monthly_amount is broken
         df = pd.DataFrame(data_list, columns=["YearMonth", "Amount"])
         total_amount = df["Amount"].sum()
         fig = px.bar(
