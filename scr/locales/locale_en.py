@@ -70,6 +70,10 @@ SAVINGS_THIS_MONTH = "Saved this month"
 SAVINGS_ACHIEVED = "Achieved"
 SAVINGS_GOALS_MESSAGE = 'Monthly goals'
 
+STATS_MODES = ["Income/expense stats", "Savings stats"]
+STATS_TITLE = "statistics menu"
+STATS_SHOWING = "Showing stats in browser"
+
 YEAR_MONTH = "%Y-%m"
 
 

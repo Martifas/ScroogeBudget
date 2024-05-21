@@ -3,6 +3,7 @@ import csv
 import pandas as pd
 import os
 import plotly.express as px
+import scr.locales.locale_en as locale
 from scr.objects.username import read_profile_file
 from scr.menu.utilities import menu_compiler
 
@@ -14,9 +15,9 @@ class Stats:
 
 
     def stats_menu(self):
-        modes = ["Income/expense stats", "Savings stats"]
-        output_string = "STATISTICS MENU"
-        menu_compiler(modes, output_string)
+        modes = locale.STATS_MODES
+        stats_title = locale.STATS_TITLE
+        menu_compiler(modes, stats_title)
 
 
     def extract_monthly_amount(self, transaction_type):
@@ -24,7 +25,7 @@ class Stats:
         for row in self.transactions_data:
             if row[0] == transaction_type:
                 date_obj = datetime.datetime.strptime(row[1], "%Y-%m-%d").date()
-                year_month = date_obj.strftime("%Y-%m")
+                year_month = date_obj.strftime(locale.YEAR_MONTH)
                 amount = int(row[2])
                 if year_month in data:
                     data[year_month] += amount
@@ -37,7 +38,7 @@ class Stats:
     def compile_stats(self):
         data_list = self.savings_stats()[1]
         self.show_stats(data_list)
-        message = "Showing stats in browser"
+        message = locale.STATS_SHOWING
         return message
 
     def income_stats(self):
