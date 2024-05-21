@@ -35,7 +35,7 @@ def case_changer() -> str:
     else:
         print("Invalid input, setting to uppercase by default.")
         case_chgr = "upper"
-    return case_chgr
+    return case
 
 
 def message_compiler(message_string: str) -> str:
