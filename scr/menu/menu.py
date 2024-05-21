@@ -43,8 +43,8 @@ def mode_select(mode: str, username: str = None) -> None:
             menu_handling(message=message, username=username)
         case _ if mode in locale.MODE_SELECT_OPTIONS_5:
             print("TESTAS 5")
-            #message :str = options()
-            #menu_handling(message=message)
+            message = options()
+            menu_handling(message=message)
         case _ if mode in locale.MODE_SELECT_EXIT_6 :
             print("TESTAS 6")
             raise EOFError
@@ -58,7 +58,7 @@ def options():
         message = select_separator()
     elif mode == "2":
         case = case_changer()
-        message = locale.OPTIONS_MESSAGE + case #Need to check if working
+        message = locale.OPTIONS_MESSAGE + case
     else:
         message = locale.OPTIONS_ERROR
     return message

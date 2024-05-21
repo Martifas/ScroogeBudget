@@ -1,6 +1,7 @@
 import csv
 import os
 import datetime
+import scr.locales.locale_en as locale
 from scr.menu.utilities import menu_compiler
 from scr.objects.username import read_profile_file
 from scr.objects.stats import Stats
@@ -20,97 +21,97 @@ class Balance:
     def income(self, n: int) -> str:
         self.balance += n
         self.update_balance_savings("balance")
-        message_string = f"{n} deposited"
+        message_string = str(n) + locale.BALANCE_DEPOSIT
         return message_string
 
     def expense(self, n: int) -> str:
         if n > self.balance:
-            message_string = f"Balance ({self.balance}) is too low for the operation"
+            message_string = locale.BALANCE_TOO_LOW + self.balance
         else:
             self.balance -= n
             self.update_balance_savings("balance")
-            message_string = f"{n} withdrawn"
+            message_string = str(n) + locale.BALANCE_WITHDRAWN
         return message_string
 
     def balance_menu(self, message: str = None) -> None:
-        modes = ["Income/Expense", "Current balance", "Savings"]
-        output_string = "MAIN/BALANCE MENU"
-        mode = menu_compiler(modes, output_string, message)
-        if mode == "back":
+        modes = locale.BALANCE_MODES
+        balance_title = locale.BALANCE_TITLE
+        mode = menu_compiler(modes, balance_title, message)
+        if mode == locale.BACK:
             return
         self.select_balance_mode(mode)
 
     def select_balance_mode(self, mode: str) -> None:
         match mode:
-            case "1" | "income" | "expense" | "i" | "e":
+            case _ if mode in  locale.BALANCE_MODE_1:
                 message_string = self.validate_transaction()
-            case "2" | "current balance":
-                message_string = f"Current account balance: {self.balance}"
-            case "3" | "budgeting":
+            case _ if mode in locale.BALANCE_MODE_2:
+                message_string = locale.BALANCE_BALANCE + self.balance
+            case _ if mode in locale.BALANCE_MODE_3:
                 self.savings_menu()
                 return
-            case "back":
+            case locale.BACK:
                 return
             case _:
-                message_string = "Error: incorrect input"
-        if mode != "back":
+                message_string = locale.ERROR_WRONG_INPUT
+        if mode != locale.BACK:
             self.balance_menu(message_string)
 
     def savings_menu(self, message: str = None):
-        modes = ["Deposit/withdraw", "Current savings balance", "Savings goal"]
-        output_string = "MAIN/BALANCE/SAVINGS MENU"
-        mode = menu_compiler(modes, output_string, message)
-        if mode == "back":
+        modes = locale.SAVINGS_MODES
+        savings_title = locale.SAVINGS_TITLE
+        mode = menu_compiler(modes, savings_title, message)
+        if mode == locale.BACK:
             self.balance_menu()
         else:
             self.select_savings_mode(mode)
 
     def select_savings_mode(self, mode: str):
         match mode:
-            case "1" | "deposit" | "withdraw" | "deposit/withdraw" | "d":
+            case _ if mode in locale.SAVINGS_MODE_1:
                 message = self.savings_deposit_withdraw()
-            case "2" | "current savings balance" | "c":
-                message = f"Current savings accoung balance: {self.savings}"
-            case "3" | "monthly savings goal" | "goal" | "m":
+            case _ if mode in locale.SAVINGS_MODE_2:
+                message = locale.SAVINGS_BALANCE + self.savings
+            case _ if mode in locale.SAVINGS_MODE_3:
                 message = self.calculate_savings()
-            case "back":
+            case locale.BACK:
                 self.balance_menu()
                 return
             case _:
-                message = "Error: incorrect input"
-        if mode != "back":
+                message = locale.ERROR_WRONG_INPUT
+        if mode != locale.BACK:
             self.savings_menu(message)
 
     def savings_deposit_withdraw(self) -> str:
-        n = input("Would you like to deposit or withdraw?: ").strip().lower()
-        if n == "deposit":
-            self.amount = int(input("How much to deposit? "))
+        n = input(locale.SAVINGS_DEPOSIT_WITHDRAW).strip().lower()
+        if n == locale.DEPOSIT:
+            self.amount = int(input(locale.SAVINGS_AMOUNT_DEPOSIT))
             if self.amount > self.balance:
-                message = f"Account balance ({self.balance}) is too low for the operation"
+                message = locale.BALANCE_TOO_LOW + self.balance
                 
             else:
                 self.savings += self.amount    
                 self.balance -= self.amount
-                message = f"{self.amount} added to savings and removed from account"
+                message = self.amount + locale.SAVINGS_ADDED_BALANCE_REMOVED
                 self.add_transactions(transaction_mode="savings")
                 self.amount = 0 - self.amount
                 self.add_transactions(transaction_mode="expense")
 
-        elif n == "withdraw":
-            self.amount = int(input("How much to withdraw?: "))
+        elif n == locale.WITHDRAW:
+            self.amount = int(input(locale.SAVINGS_AMOUNT_WITHDRAW))
             if self.amount > self.savings:
-                message = f"Not enough in savings account ({self.savings})"
+                message = locale.SAVINGS_TOO_LOW + self.savings
     
             else:
                 self.savings -= self.amount
                 self.balance += self.amount
-                message = f"{self.amount} taken from savings and added to account"
+                message = self.amount + locale.SAVINGS_REMOVED_BALANCE_ADDED
                 self.add_transactions(transaction_mode="income")
                 self.amount = 0 - self.amount
                 self.add_transactions(transaction_mode="savings")
                 
         else:
-            message = "Error: incorrect input"
+            message = locale.ERROR_WRONG_INPUT
             
         
         self.update_balance_savings("savings")
@@ -119,34 +120,37 @@ class Balance:
 
 
     def savings_goal(self) -> int:
-        savings_goal = int(input("How much % of monthly income would you like to save? "))
+        savings_goal = int(input(locale.SAVINGS_GOAL_PERCENTAGE))
         data = Stats(self.username).income_stats()[0]
-        current_month = datetime.date.today().strftime("%Y-%m")
+        current_month = datetime.date.today().strftime(locale.YEAR_MONTH)
         if current_month in data:
             savings_goal_amount = int(data[current_month] * (savings_goal / 100))
             return int(savings_goal_amount)
         else:
-            print("No data for this month")
+            print(locale.ERROR_NO_DATA)
             return
 
     def calculate_savings(self):
         savings_goal_amount = self.savings_goal()
-        message = f"Saved this month: {self.savings}\nMonthly goal: {savings_goal_amount}\nAchieved: {int((self.savings/savings_goal_amount) * 100)}%"
+        message = (f"\n{locale.SAVINGS_THIS_MONTH}: {self.savings}\n"
+           f"{locale.SAVINGS_MONTHLY_GOAL}: {savings_goal_amount}\n"
+           f"{locale.SAVINGS_ACHIEVED}: {int((self.savings / savings_goal_amount) * 100)}%")
         return message
+        
 
     def validate_transaction(self) -> str:
-        transaction_mode = input(f"Income or expense?: ").lower().strip()
-        self.amount = input(f"Record amount: ")
-        if transaction_mode == "back" or self.amount == "back":
+        transaction_mode = input(locale.INCOME_EXPENSE).lower().strip()
+        self.amount = input(locale.BALANCE_RECORD_AMOUNT)
+        if transaction_mode == locale.BACK or self.amount == locale.BACK:
             self.balance_menu()
-        elif transaction_mode == "expense":
+        elif transaction_mode == locale.EXPENSE:
             message_string = self.expense(int(self.amount))
-            self.add_transactions(transaction_mode) # TO DO
-        elif transaction_mode == "income":
+            self.add_transactions(transaction_mode)
+        elif transaction_mode == locale.INCOME:
             message_string = self.income(int(self.amount))
-            self.add_transactions(transaction_mode) # TO DO
+            self.add_transactions(transaction_mode)
         else:
-            print("Enter 'income' or 'expense'")
+            print(locale.BALANCE_ERROR_VALIDATE)
             self.validate_transaction()
         return message_string
 
