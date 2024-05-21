@@ -1,10 +1,8 @@
 import datetime
-import csv
 import pandas as pd
-import os
 import plotly.express as px
 import scr.locales.locale_en as locale
-from scr.objects.username import read_profile_file
+from scr.menu.username import read_profile_file
 from scr.menu.utilities import menu_compiler
 
 

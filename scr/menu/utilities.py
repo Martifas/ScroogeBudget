@@ -1,6 +1,3 @@
-import csv
-from typing import List, Tuple
-from pathlib import Path
 import re
 import scr.locales.locale_en as locale
 

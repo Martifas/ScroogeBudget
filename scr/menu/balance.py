@@ -3,8 +3,8 @@ import os
 import datetime
 import scr.locales.locale_en as locale
 from scr.menu.utilities import menu_compiler
-from scr.objects.username import read_profile_file
-from scr.objects.stats import Stats
+from scr.menu.username import read_profile_file
+from scr.menu.stats import Stats
 
 
 class Balance:
