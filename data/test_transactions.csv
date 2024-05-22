@@ -1,5 +1,9 @@
 transaction_type,date,amount
-balance,2024-05,1100
-income,2024-05,1610
-expense,2024-05,510
+balance,2024-04,1100
+income,2024-04,1610
+expense,2024-04,510
+savings,2024-04,0
+income,2024-05,1
+balance,2024-05,0
+expense,2024-05,1
 savings,2024-05,0
