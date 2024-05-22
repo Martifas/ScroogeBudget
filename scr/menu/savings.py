@@ -44,16 +44,15 @@ class Savings:
         if n == locale.BACK:
             self.savings_menu()
         elif n == locale.DEPOSIT:
-            self.amount: int = int(input(locale.SAVINGS_AMOUNT_DEPOSIT))
+            self.amount = int(input(locale.SAVINGS_AMOUNT_DEPOSIT))
             if self.amount > self.balance:
                 message: str = locale.BALANCE_TOO_LOW + str(self.balance)
             else:
                 self.savings += self.amount
                 self.balance -= self.amount
                 message = str(self.amount) + locale.SAVINGS_ADDED_BALANCE_REMOVED
-                self.Balance.add_transactions(transaction_mode="savings")
-                self.amount = -self.amount
-                self.Balance.add_transactions(transaction_mode="income")
+                self.Balance.add_transactions(transaction_mode="savings", amount=self.amount)
+                self.Balance.add_transactions(transaction_mode="balance", amount=-self.amount)
         elif n == locale.WITHDRAW:
             self.amount = int(input(locale.SAVINGS_AMOUNT_WITHDRAW))
             if self.amount > self.savings:
@@ -62,12 +61,14 @@ class Savings:
                 self.savings -= self.amount
                 self.balance += self.amount
                 message = str(self.amount) + locale.SAVINGS_REMOVED_BALANCE_ADDED
-                self.Balance.add_transactions(transaction_mode="income")
+                self.Balance.add_transactions(transaction_mode="balance", amount=self.amount)
                 self.amount = -self.amount
-                self.Balance.add_transactions(transaction_mode="savings")
+                self.Balance.add_transactions(transaction_mode="savings", amount=self.amount)
         else:
             message = locale.ERROR_WRONG_INPUT
 
+        self.Balance.balance = self.balance
+        self.Balance.savings = self.savings
         self.Balance.update_balance_savings("savings")
         self.Balance.update_balance_savings("balance")
         return message
