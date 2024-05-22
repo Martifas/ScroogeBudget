@@ -6,6 +6,7 @@ INCOME = "income"
 BALANCE = "balance"
 SAVINGS = "savings"
 INCOME_EXPENSE = f"{INCOME} or {EXPENSE}? "
+
 BALANCE_MODES = ["Income/Expense", "Current balance", "Savings"]
 BALANCE_TITLE = "main/balance menu"
 BALANCE_DEPOSIT = " deposited"
@@ -28,10 +29,15 @@ MODE_SELECT_STATISTICS_2 = ("2", "statistics", "s")
 MODE_SELECT_PROFILE_3 = ("3", "profile", "p")
 MODE_SELECT_OPTIONS_4 = ("4", "options", "o")
 MODE_SELECT_EXIT_5 = ("5", "exit", "e")
+
 ERROR_WRONG_INPUT = "Error: wrong input"
 ERROR_CREATING_FILE = "Error creating profile file"
+ERROR_INCORRECT_FORMAT = "Incorrect format"
 ERROR_NO_DATA = "no data for this month"
+ERROR_FILE_NOT_FOUND = "file not found"
+
 MAIN_EXIT = "|PROGRAM CLOSED|"
+
 OPTIONS_MODES = ["Change message/error separator", "Change messages to uppercase, lowercase or titlecase"]
 OPTIONS_TITLE = "OPTIONS"
 OPTIONS_MESSAGE = "Messages set to "
@@ -75,5 +81,15 @@ STATS_SAVINGS_TABLE_DISPLAYED = "Savings table displayed"
 STATS_INCOME_EXPENSE_DISPLAYED = f"Income/Expense table displayed"
 STATS_SHOWING = "Showing stats in browser"
 YEAR_MONTH = "%Y-%m"
+
+USERNAME = "Username: "
+USERNAME_ENTER = "Enter your username"
+USERNAME_VALID_INPUTS = ("y", "n", "yes", "no")
+USERNAME_INVALID_INPUT = "Error: please enter 'y' or 'n'."
+USERNAME_NO_PROFILE = "No profile found. Create new profile? (y/n): "
+USERNAME_Y = "y"
+USERNAME_N = "n"
+USERNAME_SELECTED = "profile selected"
+USERNAME_TRANSACTIONS_SELECTED = "transactions file selected"
 
 
