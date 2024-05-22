@@ -22,7 +22,7 @@ class Balance:
         self.balance += n
         self.update_balance_savings("balance")
         self.add_transactions("income", n)
-        self.update_balance_in_transactions()
+        self.update_balance_in_transactions(n)
         message_string: str = str(n) + locale.BALANCE_DEPOSIT
         return message_string
 
@@ -33,7 +33,8 @@ class Balance:
             self.balance -= n
             self.update_balance_savings("balance")
             self.add_transactions("expense", n)
-            self.update_balance_in_transactions()
+            updated_n = -n
+            self.update_balance_in_transactions(updated_n)
             message_string = str(n) + locale.BALANCE_WITHDRAWN
         return message_string
 
@@ -125,7 +126,7 @@ class Balance:
             writer = csv.writer(write_file)
             writer.writerows(rows)
 
-    def update_balance_in_transactions(self) -> None:
+    def update_balance_in_transactions(self, n: int) -> None:
         current_date: str = datetime.date.today().strftime(locale.YEAR_MONTH)
         transaction_found: bool = False
         try:
@@ -137,11 +138,12 @@ class Balance:
 
         for row in rows:
             if row[1] == current_date and row[0] == "balance":
-                row[2] = str(self.balance)
+                temporary_amount = int(row[2]) + n
+                row[2] = str(temporary_amount)
                 transaction_found = True
                 break
         if not transaction_found:
-            rows.append(["balance", current_date, str(self.balance)])
+            rows.append(["balance", current_date, str(temporary_amount)])
         with open(self.transactions_file_path, "w", newline="") as write_file:
             writer = csv.writer(write_file)
             writer.writerows(rows)
