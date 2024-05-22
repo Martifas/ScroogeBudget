@@ -32,10 +32,10 @@ class Stats:
 
     def compile_stats(self, mode):
         if mode == "income/expense":
-            filtered_data = [row for row in self.transactions_data if row[0] in ["income", "expense", "balance"]]
+            filtered_data = [row for row in self.transactions_data if row[0] in locale.STATS_TRANSACTIONS_TYPES]
             message_string = self.show_stats(filtered_data, mode)
         elif mode == "savings":
-            filtered_data = [row for row in self.transactions_data if row[0] == "savings"]
+            filtered_data = [row for row in self.transactions_data if row[0] == locale.SAVINGS]
             message_string = self.show_stats(filtered_data, mode)
         else:
             message_string = locale.ERROR_WRONG_INPUT
@@ -58,11 +58,11 @@ class Stats:
         pivot_df = df.pivot_table(index='month', columns='transaction_type', values='amount', aggfunc='sum').fillna(0)
 
         table = tabulate(pivot_df, headers='keys', tablefmt='grid', floatfmt='.2f')
-        print("\nIncome/Expense Table:")
+        print(locale.STATS_INCOME_EXPENSE_TABLE)
         print(table)
         print()
 
-        return "Income/Expense table displayed."
+        return locale.STATS_INCOME_EXPENSE_DISPLAYED
 
     def display_savings_table(self, data_list):
         df = pd.DataFrame(data_list, columns=['transaction_type', 'date', 'amount'])
@@ -72,8 +72,8 @@ class Stats:
         pivot_df = df.pivot_table(index='month', columns='transaction_type', values='amount', aggfunc='sum').fillna(0)
 
         table = tabulate(pivot_df, headers='keys', tablefmt='grid', floatfmt='.2f')
-        print("\nSavings Table:")
+        print(locale.STATS_SAVINGS_TABLE)
         print(table)
         print()
 
-        return "Savings table displayed."
+        return locale.STATS_SAVINGS_TABLE_DISPLAYED
