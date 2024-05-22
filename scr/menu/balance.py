@@ -18,26 +18,7 @@ class Balance:
         self.transactions_file_path: str = os.path.join(data_path, f"{self.username}_transactions.csv")
         self.transactions_data: List[List[str]] = read_profile_file(self.username, transactions=True)[0]
 
-    def income(self, n: int) -> str:
-        self.balance += n
-        self.update_balance_savings("balance")
-        self.add_transactions("income", n)
-        self.update_balance_in_transactions(n)
-        message_string: str = str(n) + locale.BALANCE_DEPOSIT
-        return message_string
-
-    def expense(self, n: int) -> str:
-        if n > self.balance:
-            message_string: str = locale.BALANCE_TOO_LOW + str(self.balance)
-        else:
-            self.balance -= n
-            self.update_balance_savings("balance")
-            self.add_transactions("expense", n)
-            updated_n = -n
-            self.update_balance_in_transactions(updated_n)
-            message_string = str(n) + locale.BALANCE_WITHDRAWN
-        return message_string
-
+    
     def balance_menu(self, message: Optional[str] = None) -> None:
         from scr.menu.savings import Savings
         modes: List[str] = locale.BALANCE_MODES
@@ -90,6 +71,25 @@ class Balance:
         else:
             message_string: str = self.income(self.amount)
 
+        return message_string
+    def income(self, n: int) -> str:
+        self.balance += n
+        self.update_balance_savings("balance")
+        self.add_transactions("income", n)
+        self.update_balance_in_transactions(n)
+        message_string: str = str(n) + locale.BALANCE_DEPOSIT
+        return message_string
+
+    def expense(self, n: int) -> str:
+        if n > self.balance:
+            message_string: str = locale.BALANCE_TOO_LOW + str(self.balance)
+        else:
+            self.balance -= n
+            self.update_balance_savings("balance")
+            self.add_transactions("expense", n)
+            updated_n = -n
+            self.update_balance_in_transactions(updated_n)
+            message_string = str(n) + locale.BALANCE_WITHDRAWN
         return message_string
 
     def update_balance_savings(self, n: str) -> None:

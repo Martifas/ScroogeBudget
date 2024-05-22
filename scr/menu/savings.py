@@ -31,6 +31,8 @@ class Savings:
                 message = locale.SAVINGS_BALANCE + str(self.savings)
             case _ if mode in locale.SAVINGS_MODE_3:
                 message = self.calculate_savings()
+            case _ if mode in locale.SAVINGS_MODE_4:
+                pass
             case locale.BACK:
                 self.Balance.balance_menu()
                 return
@@ -82,7 +84,7 @@ class Savings:
         self.savings_menu(message=message)
         return message
 
-    def example(self) -> Optional[int]:
+    def goal_getter(self) -> Optional[int]:
         try:
             savings_goal_percent: str = input(locale.SAVINGS_GOAL_PERCENTAGE)
             if savings_goal_percent == locale.BACK:
@@ -96,7 +98,7 @@ class Savings:
             return None
 
     def calculate_savings(self) -> str:
-        monthly_savings_goal: Optional[int] = self.example()
+        monthly_savings_goal: Optional[int] = self.goal_getter()
         if monthly_savings_goal is None:
             return locale.ERROR_WRONG_INPUT
 

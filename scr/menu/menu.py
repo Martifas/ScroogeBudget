@@ -2,6 +2,7 @@ import scr.locales.locale_en as locale
 from scr.menu.utilities import menu_compiler, select_separator, case_changer
 from scr.menu.balance import Balance
 from scr.menu.username import profile_option
+from scr.menu.stats import Stats
 
 
 balance = None
@@ -29,23 +30,20 @@ def menu(message: str = None) -> str:
 def mode_select(mode: str, username: str = None) -> None:
     global balance
     match mode:
-        case _ if mode in locale.MODE_SELECT_BALANCE_1 :
+        case _ if mode in locale.MODE_SELECT_BALANCE_1:
             if not Balance(username).balance_menu():
                 menu_handling(username=username)
-        case _ if mode in locale.MODE_SELECT_FORECAST_2 :
-            print("TESTAS 2")
-            #print("Forecast running")
-        case _ if mode in locale.MODE_SELECT_STATISTICS_3 :
-            print("TESTAS 3")
-            #stats_menu()
-        case _ if mode in locale.MODE_SELECT_PROFILE_4 :
+        case _ if mode in locale.MODE_SELECT_STATISTICS_2:
+            username = Stats(username).stats_menu(username)
+            menu_handling(username=username)
+        case _ if mode in locale.MODE_SELECT_PROFILE_3:
             balance, message, username = profile_option()
             menu_handling(message=message, username=username)
-        case _ if mode in locale.MODE_SELECT_OPTIONS_5:
+        case _ if mode in locale.MODE_SELECT_OPTIONS_4:
             print("TESTAS 5")
             message = options()
             menu_handling(message=message)
-        case _ if mode in locale.MODE_SELECT_EXIT_6 :
+        case _ if mode in locale.MODE_SELECT_EXIT_5:
             print("TESTAS 6")
             raise EOFError
 
