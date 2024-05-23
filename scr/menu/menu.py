@@ -62,8 +62,6 @@ def options() -> str:
 
     if mode in options_actions:
         message = options_actions[mode]()
-        if mode == "2":
-            message = locale.OPTIONS_MESSAGE + message
     else:
         message = locale.OPTIONS_ERROR
 

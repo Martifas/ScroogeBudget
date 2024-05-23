@@ -35,6 +35,7 @@ ERROR_CREATING_FILE = "Error creating profile file"
 ERROR_INCORRECT_FORMAT = "Incorrect format"
 ERROR_NO_DATA = "no data for this month"
 ERROR_FILE_NOT_FOUND = "file not found"
+ERROR_INCOME_ZERO = "No income this month"
 
 FORECAST_MODES = ["Date when wanted savings amount could be reached", "Amount of savings on specific date"]
 FORECAST_TITLE = "Forecast menu"
@@ -58,7 +59,6 @@ MAIN_EXIT = "|PROGRAM CLOSED|"
 
 OPTIONS_MODES = ["Change message/error separator", "Change messages to uppercase, lowercase or titlecase"]
 OPTIONS_TITLE = "OPTIONS"
-OPTIONS_MESSAGE = "Messages set to "
 OPTIONS_ERROR = "Error: Select by entering '1' or '2'"
 
 UTILITIES_SEPARATOR_INPUT = "Select one character to use as separator in menu: " 
@@ -68,6 +68,9 @@ UTILITIES_CASE_INPUT = "Do you want the messages to be in lowercase, uppercase o
 UTILITIES_LOWERCASE = "lowercase"
 UTILITIES_UPPERCASE = "uppercase"
 UTILITIES_TITLECASE = "titlecase"
+UTILITIES_SET_TO_LOWERCASE = "Messages set to lowercase "
+UTILITIES_SET_TO_TITLECASE = "Messages set to titlecase "
+UTILITIES_SET_TO_UPPERCASE = "Messages set to uppercase "
 UTILITIES_CASE_ERROR = "Error: invalid input, setting to uppercase by default"
 
 SAVINGS_MODES = ["Deposit/withdraw", "Current savings balance", "Savings goal", "Forecast"]

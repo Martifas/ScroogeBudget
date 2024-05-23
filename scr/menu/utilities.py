@@ -24,14 +24,17 @@ def case_changer() -> str:
     case = input(locale.UTILITIES_CASE_INPUT).lower()
     if case == locale.UTILITIES_LOWERCASE:
         case_chgr = "lower"
+        message = locale.UTILITIES_SET_TO_LOWERCASE
     elif case == locale.UTILITIES_UPPERCASE:
         case_chgr = "upper"
+        message = locale.UTILITIES_SET_TO_UPPERCASE
     elif case == locale.UTILITIES_TITLECASE:
         case_chgr = "title"
+        message = locale.UTILITIES_SET_TO_TITLECASE
     else:
-        print(locale.UTILITIES_CASE_ERROR)
+        message = locale.UTILITIES_CASE_ERROR
         case_chgr = "upper"
-    return case
+    return message
 
 
 def message_compiler(message_string: str) -> str:
