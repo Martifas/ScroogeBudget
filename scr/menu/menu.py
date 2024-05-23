@@ -47,13 +47,13 @@ def mode_select(mode: str, username: str = None) -> None:
             balance, message, username = profile_option()
             menu_handling(message=message, username=username)
         case _ if mode in locale.MODE_SELECT_OPTIONS_4:
-            message = options()
+            message = options(username)
             menu_handling(message=message)
         case _ if mode in locale.MODE_SELECT_EXIT_5:
             raise EOFError
 
 
-def options() -> str:
+def options(username) -> str:
     modes = locale.OPTIONS_MODES
     title = locale.OPTIONS_TITLE
     mode = menu_compiler(modes, title)
@@ -65,4 +65,4 @@ def options() -> str:
     else:
         message = locale.OPTIONS_ERROR
 
-    return message
+    menu_handling(message,username)
