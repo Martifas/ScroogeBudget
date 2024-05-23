@@ -40,6 +40,19 @@ FORECAST_MODES = ["Date when wanted savings amount could be reached", "Amount of
 FORECAST_TITLE = "Forecast menu"
 FORECAST_SELECT_MODE_1 = ("1", "date", "d")
 FORECAST_SELECT_MODE_2 = ("2", "amount", "a")
+FORECAST_ERROR_NO_DATA = "Data missing for forecast"
+FORECAST_AMOUNT_WANTED = "What amount of savings would you like to have? "
+FORECAST_DATE_WANTED = "Enter the target date (YYYY-MM): "
+FORECAST_INVALID_FORMAT = "Invalid date format. Please enter the date in the format YYYY-MM."
+FORECAST_NO_LOWER_DATE = "Target date cannot be lower than today's date."
+FORECAST_DATE_BASED = "Based on your average monthly savings of "
+FORECAST_REACH_GOAL = "You will reach your savings goal "
+FORECAST_APPROXIMATELY = "Which is approximately "
+FORECAST_ALREADY_HAVE = "You already have in savings: "
+FORECAST_SAVINGS = "your forecasted savings amount on "
+FORECAST_IS_APPROXIMATELY = "is approximately"
+FORECAST_IN = "in"
+FORECAST_MONTHS = "months"
 
 MAIN_EXIT = "|PROGRAM CLOSED|"
 
