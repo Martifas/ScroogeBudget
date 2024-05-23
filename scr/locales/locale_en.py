@@ -36,6 +36,11 @@ ERROR_INCORRECT_FORMAT = "Incorrect format"
 ERROR_NO_DATA = "no data for this month"
 ERROR_FILE_NOT_FOUND = "file not found"
 
+FORECAST_MODES = ["Date when wanted savings amount could be reached", "Amount of savings on specific date"]
+FORECAST_TITLE = "Forecast menu"
+FORECAST_SELECT_MODE_1 = ("1", "date", "d")
+FORECAST_SELECT_MODE_2 = ("2", "amount", "a")
+
 MAIN_EXIT = "|PROGRAM CLOSED|"
 
 OPTIONS_MODES = ["Change message/error separator", "Change messages to uppercase, lowercase or titlecase"]

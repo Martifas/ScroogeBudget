@@ -2,6 +2,7 @@ import scr.locales.locale_en as locale
 import datetime
 from scr.menu.utilities import menu_compiler
 from scr.menu.username import read_profile_file
+from scr.menu.forecast import forecast_menu
 from typing import Optional, Union
 
 class Savings:
@@ -32,7 +33,7 @@ class Savings:
             case _ if mode in locale.SAVINGS_MODE_3:
                 message = self.calculate_savings()
             case _ if mode in locale.SAVINGS_MODE_4:
-                pass
+                message = forecast_menu(self.username) # Pass the forecast function here
             case locale.BACK:
                 self.Balance.balance_menu()
                 return
