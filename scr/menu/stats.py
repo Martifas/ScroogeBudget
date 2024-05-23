@@ -5,14 +5,14 @@ import pandas as pd
 from tabulate import tabulate
 
 class Stats:
-    def __init__(self, username: str):
-        self.username: str = username
-        self.transactions_data: list = read_profile_file(self.username, transactions=True)[0]
+    def __init__(self, username: str) -> None:
+        self.username = username
+        self.transactions_data = read_profile_file(self.username, transactions=True)[0]
         
     def stats_menu(self, username: str) -> str:
-        modes: list = locale.STATS_MODES
-        stats_title: str = locale.STATS_TITLE
-        mode: str = menu_compiler(modes, stats_title)
+        modes = locale.STATS_MODES
+        stats_title = locale.STATS_TITLE
+        mode = menu_compiler(modes, stats_title)
         if mode == locale.BACK:
             return username
         self.select_mode(mode)
@@ -21,11 +21,11 @@ class Stats:
     def select_mode(self, mode: str) -> None:
         match mode:
             case _ if mode in locale.STATS_MODE_1:
-                message_string: str = self.compile_stats("income/expense")
+                message_string = self.compile_stats("income/expense")
             case _ if mode in locale.STATS_MODE_2:
-                message_string: str = self.compile_stats("savings")
+                message_string = self.compile_stats("savings")
             case _:
-                message_string: str = locale.ERROR_WRONG_INPUT
+                message_string = locale.ERROR_WRONG_INPUT
         if mode != locale.BACK:
             print(message_string)
             self.stats_menu(self.username)
@@ -36,28 +36,28 @@ class Stats:
             "savings": lambda row: row[0] == locale.SAVINGS
         }
         if mode in filter_conditions:
-            filtered_data: list = [row for row in self.transactions_data if filter_conditions[mode](row)]
-            message_string: str = self.show_stats(filtered_data, mode)
+            filtered_data = [row for row in self.transactions_data if filter_conditions[mode](row)]
+            message_string = self.show_stats(filtered_data, mode)
         else:
-            message_string: str = locale.ERROR_WRONG_INPUT
+            message_string = locale.ERROR_WRONG_INPUT
         return message_string
 
     def show_stats(self, data_list: list, mode: str) -> str:
         if mode == "income/expense":
-            message: str = self.display_table(data_list, locale.STATS_INCOME_EXPENSE_TABLE, locale.STATS_INCOME_EXPENSE_DISPLAYED)
+            message = self.display_table(data_list, locale.STATS_INCOME_EXPENSE_TABLE, locale.STATS_INCOME_EXPENSE_DISPLAYED)
         elif mode == "savings":
-            message: str = self.display_table(data_list, locale.STATS_SAVINGS_TABLE, locale.STATS_SAVINGS_TABLE_DISPLAYED)
+            message = self.display_table(data_list, locale.STATS_SAVINGS_TABLE, locale.STATS_SAVINGS_TABLE_DISPLAYED)
         else:
-            message: str = locale.ERROR_WRONG_INPUT
+            message = locale.ERROR_WRONG_INPUT
         return message
 
     def display_table(self, data_list: list, table_title: str, displayed_message: str) -> str:
-        df: pd.DataFrame = pd.DataFrame(data_list, columns=["transaction_type", "date", "amount"])
+        df = pd.DataFrame(data_list, columns=["transaction_type", "date", "amount"])
         df["date"] = pd.to_datetime(df["date"])
         df["amount"] = pd.to_numeric(df["amount"])
         df["month"] = df["date"].dt.strftime("%Y-%m")
-        pivot_df: pd.DataFrame = df.pivot_table(index="month", columns="transaction_type", values="amount", aggfunc="sum").fillna(0)
-        table: str = tabulate(pivot_df, headers="keys", tablefmt="grid", floatfmt=".2f")
+        pivot_df = df.pivot_table(index="month", columns="transaction_type", values="amount", aggfunc="sum").fillna(0)
+        table = tabulate(pivot_df, headers="keys", tablefmt="grid", floatfmt=".2f")
         print(table_title)
         print(table)
         print()

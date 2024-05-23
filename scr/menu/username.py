@@ -7,13 +7,13 @@ from scr.locales import locale_en as locale
 from scr.menu.utilities import message_compiler
 
 def get_data_path() -> str:
-    base_path: str = os.path.dirname(os.path.abspath(__file__))
+    base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, "..", "..", "data")
 
 def create_profile_file(username: str) -> None:
-    data_path: str = get_data_path()
-    profile_file_path: str = os.path.join(data_path, f"user_{username}.csv")
-    transactions_file_path: str = os.path.join(data_path, f"{username}_transactions.csv")
+    data_path = get_data_path()
+    profile_file_path = os.path.join(data_path, f"user_{username}.csv")
+    transactions_file_path = os.path.join(data_path, f"{username}_transactions.csv")
 
     try:
         with open(profile_file_path, "a", newline="") as file:
@@ -30,32 +30,32 @@ def create_profile_file(username: str) -> None:
         sys.exit(1)
 
 def read_profile_file(username: str, transactions: bool = False) -> Tuple[List[List[str]], str]:
-    data_path: str = get_data_path()
-    file_path: str = os.path.join(data_path, f"{'user_' if not transactions else ''}{username}{'_transactions' if transactions else ''}.csv")
+    data_path = get_data_path()
+    file_path = os.path.join(data_path, f"{'user_' if not transactions else ''}{username}{'_transactions' if transactions else ''}.csv")
 
     try:
         with open(file_path, "r") as file:
-            reader: csv.reader = csv.reader(file)
-            profile_data: List[List[str]] = list(reader)
-            message: str = locale.USERNAME_SELECTED if not transactions else locale.USERNAME_TRANSACTIONS_SELECTED
+            reader = csv.reader(file)
+            profile_data = list(reader)
+            message = locale.USERNAME_SELECTED if not transactions else locale.USERNAME_TRANSACTIONS_SELECTED
         return profile_data, message
 
     except FileNotFoundError:
         return [], locale.ERROR_FILE_NOT_FOUND
 
 def profile_option() -> Tuple[int, str, str]:
-    username: str = get_profile()
+    username = get_profile()
     profile_data, message = open_profile(username)
-    balance: int = int(profile_data[1][0])
+    balance = int(profile_data[1][0])
     return balance, message, username
 
 def get_profile() -> str:
-    message_string: str = locale.USERNAME_ENTER
+    message_string = locale.USERNAME_ENTER
     print(message_compiler(message_string))
 
     while True:
-        username: str = input(locale.USERNAME).lower().strip()
-        username_match: re.Match = re.search(r"^\w+$", username)
+        username = input(locale.USERNAME).lower().strip()
+        username_match = re.search(r"^\w+$", username)
 
         if username_match:
             break
@@ -66,7 +66,7 @@ def get_profile() -> str:
 
 def get_valid_input(prompt: str) -> str:
     while True:
-        user_input: str = input(prompt).lower().strip()
+        user_input = input(prompt).lower().strip()
 
         if user_input in locale.USERNAME_VALID_INPUTS:
             return user_input
@@ -77,8 +77,8 @@ def open_profile(username: str) -> Tuple[List[List[str]], str]:
     profile_data, message = read_profile_file(username)
 
     if message == locale.ERROR_FILE_NOT_FOUND:
-        prompt: str = locale.USERNAME_NO_PROFILE
-        new_user: str = get_valid_input(prompt)
+        prompt = locale.USERNAME_NO_PROFILE
+        new_user = get_valid_input(prompt)
 
         if new_user == locale.USERNAME_Y:
             create_profile_file(username)

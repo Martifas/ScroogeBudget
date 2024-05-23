@@ -3,7 +3,7 @@ import scr.locales.locale_en as locale
 from scr.menu.menu import menu_handling
 
 
-def main():
+def main() -> None:
     try:
         menu_handling()
     except EOFError:
