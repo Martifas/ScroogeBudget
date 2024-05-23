@@ -43,7 +43,7 @@ class Balance:
             case locale.BACK:
                 return
             case _:
-                message_string: str = locale.ERROR_WRONG_INPUT
+                message_string = locale.ERROR_WRONG_INPUT
 
         if mode != locale.BACK:
             self.balance_menu(message_string)

@@ -33,7 +33,7 @@ class Savings:
             case _ if mode in locale.SAVINGS_MODE_3:
                 message = self.calculate_savings()
             case _ if mode in locale.SAVINGS_MODE_4:
-                message = forecast_menu(self.username) # Pass the forecast function here
+                message = forecast_menu(self.username)
             case locale.BACK:
                 self.Balance.balance_menu()
                 return
@@ -112,8 +112,6 @@ class Savings:
         except ZeroDivisionError:
             return locale.ERROR_INCOME_ZERO
         message = (
-            f"{locale.SAVINGS_THIS_MONTH}: {monthly_savings}\n"
-            f"{locale.SAVINGS_GOALS_MESSAGE}: {monthly_savings_goal}\n"
-            f"{locale.SAVINGS_ACHIEVED}: {percentage_achieved}%"
+            f"{locale.SAVINGS_THIS_MONTH}: {monthly_savings} | {locale.SAVINGS_GOALS_MESSAGE}: {monthly_savings_goal:.2f} | {locale.SAVINGS_ACHIEVED}: {percentage_achieved:.2f}%"
         )
         return message

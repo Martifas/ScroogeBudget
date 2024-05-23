@@ -17,6 +17,8 @@ def forecast_menu(username: str, message: str = None) -> str:
                 result = forecast_date(username)
             case _ if mode in locale.FORECAST_SELECT_MODE_2:
                 result = forecast_amount(username)
+            case _:
+                result = locale.ERROR_WRONG_INPUT
         if result == locale.BACK:
             continue
         else:
@@ -35,7 +37,7 @@ def forecast_date(username: str) -> str:
             wanted_amount = int(wanted_amount)
             break
         except ValueError:
-            print(locale.FORECAST_INVALID_INPUT)
+            print(locale.ERROR_WRONG_INPUT)
     if wanted_amount <= existing_savings:
         message = f"{locale.FORECAST_ALREADY_HAVE}{existing_savings}"
         return message
