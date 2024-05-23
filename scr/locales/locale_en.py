@@ -21,8 +21,8 @@ BALANCE_ERROR_VALIDATE = "Enter 'income' or 'expense'"
 MENU_MODES = ["Balance & Savings", "Statistics", "Profile", "Options", "Exit"]
 MENU_TITLE = "MAIN MENU"
 SELECT_MODE = "Select mode: "
-MENU_HANDLING_MODES = ["1", "2", "3", "4", "5", "budget", "statistics", "profile", "options", "exit"]
-MENU_HANDLING_MODES_WITHOUT_PROFILE = ["3", "profile", "4", "options", "5", "exit"]
+MENU_HANDLING_MODES = ["1", "2", "3", "4", "5", "balance", "savings", "statistics", "profile", "options", "exit", "b", "s", "p", "o", "e"]
+MENU_HANDLING_MODES_WITHOUT_PROFILE = ["3", "profile", "4", "options", "5", "exit", "p", "o", "e"]
 MENU_HANDLING_USER = "Select user first"
 MODE_SELECT_BALANCE_1 = ("1", "balance", "savings", "b")
 MODE_SELECT_STATISTICS_2 = ("2", "statistics", "s")
@@ -112,5 +112,3 @@ USERNAME_Y = "y"
 USERNAME_N = "n"
 USERNAME_SELECTED = "profile selected"
 USERNAME_TRANSACTIONS_SELECTED = "transactions file selected"
-
-
