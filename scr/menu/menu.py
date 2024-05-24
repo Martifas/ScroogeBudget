@@ -65,4 +65,4 @@ def options(username) -> str:
     else:
         message = locale.OPTIONS_ERROR
 
-    menu_handling(message,username)
+    menu_handling(message, username)

@@ -5,6 +5,7 @@ import numpy as np
 import datetime
 import re
 
+
 def forecast_menu(username: str, message: str = None) -> str:
     while True:
         modes = locale.FORECAST_MODES
@@ -23,6 +24,7 @@ def forecast_menu(username: str, message: str = None) -> str:
             continue
         else:
             return result
+
 
 def forecast_date(username: str) -> str:
     savings_monthly_average, existing_savings = real_or_custom(username)
@@ -43,11 +45,14 @@ def forecast_date(username: str) -> str:
         return message
     months_needed = int((wanted_amount - existing_savings) / savings_monthly_average)
     current_date = datetime.date.today()
-    forecasted_date = current_date + datetime.timedelta(days=months_needed*30)
-    message = (f"{locale.FORECAST_DATE_BASED}{savings_monthly_average:.0f}, "
-               f"{locale.FORECAST_REACH_GOAL}{wanted_amount} {locale.FORECAST_IN} {months_needed} {locale.FORECAST_MONTHS}, "
-               f"{locale.FORECAST_APPROXIMATELY}{forecasted_date.strftime(locale.YEAR_MONTH)}.")
+    forecasted_date = current_date + datetime.timedelta(days=months_needed * 30)
+    message = (
+        f"{locale.FORECAST_DATE_BASED}{savings_monthly_average:.0f}, "
+        f"{locale.FORECAST_REACH_GOAL}{wanted_amount} {locale.FORECAST_IN} {months_needed} {locale.FORECAST_MONTHS}, "
+        f"{locale.FORECAST_APPROXIMATELY}{forecasted_date.strftime(locale.YEAR_MONTH)}."
+    )
     return message
+
 
 def forecast_amount(username: str) -> str:
     savings_monthly_average, existing_savings = real_or_custom(username)
@@ -67,11 +72,16 @@ def forecast_amount(username: str) -> str:
             print(locale.FORECAST_NO_LOWER_DATE)
             continue
         break
-    months_diff = (target_date.year - current_date.year) * 12 + (target_date.month - current_date.month)
+    months_diff = (target_date.year - current_date.year) * 12 + (
+        target_date.month - current_date.month
+    )
     forecasted_amount = existing_savings + (savings_monthly_average * months_diff)
-    message = (f"{locale.FORECAST_DATE_BASED}{savings_monthly_average:.0f}, "
-               f"{locale.FORECAST_SAVINGS}{target_date_str} {locale.FORECAST_IS_APPROXIMATELY} {forecasted_amount:.0f}.")
+    message = (
+        f"{locale.FORECAST_DATE_BASED}{savings_monthly_average:.0f}, "
+        f"{locale.FORECAST_SAVINGS}{target_date_str} {locale.FORECAST_IS_APPROXIMATELY} {forecasted_amount:.0f}."
+    )
     return message
+
 
 def get_savings_data(username: str) -> tuple:
     transactions_data = read_profile_file(username, transactions=True)[0]
@@ -84,6 +94,7 @@ def get_savings_data(username: str) -> tuple:
     existing_savings = int(read_profile_file(username)[0][1][1])
     return savings_monthly_average, existing_savings
 
+
 def real_or_custom(username: str) -> int:
     while True:
         real_custom = input(locale.FORECAST_REAL_CUSTOM).strip().lower()
@@ -92,7 +103,7 @@ def real_or_custom(username: str) -> int:
         elif real_custom == "2":
             savings_monthly_average = int(input(locale.FORECAST_SAVINGS_EVERY_MONTH))
             existing_savings = int(input(locale.FORECAST_SAVINGS_NOW))
-        else: 
+        else:
             print(locale.ERROR_WRONG_INPUT)
             continue
         return savings_monthly_average, existing_savings

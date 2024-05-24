@@ -6,9 +6,11 @@ from typing import List, Tuple
 from scr.locales import locale_en as locale
 from scr.menu.utilities import message_compiler
 
+
 def get_data_path() -> str:
     base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, "..", "..", "data")
+
 
 def create_profile_file(username: str) -> None:
     data_path = get_data_path()
@@ -29,25 +31,37 @@ def create_profile_file(username: str) -> None:
         print(locale.ERROR_CREATING_FILE)
         sys.exit(1)
 
-def read_profile_file(username: str, transactions: bool = False) -> Tuple[List[List[str]], str]:
+
+def read_profile_file(
+    username: str, transactions: bool = False
+) -> Tuple[List[List[str]], str]:
     data_path = get_data_path()
-    file_path = os.path.join(data_path, f"{'user_' if not transactions else ''}{username}{'_transactions' if transactions else ''}.csv")
+    file_path = os.path.join(
+        data_path,
+        f"{'user_' if not transactions else ''}{username}{'_transactions' if transactions else ''}.csv",
+    )
 
     try:
         with open(file_path, "r") as file:
             reader = csv.reader(file)
             profile_data = list(reader)
-            message = locale.USERNAME_SELECTED if not transactions else locale.USERNAME_TRANSACTIONS_SELECTED
+            message = (
+                locale.USERNAME_SELECTED
+                if not transactions
+                else locale.USERNAME_TRANSACTIONS_SELECTED
+            )
         return profile_data, message
 
     except FileNotFoundError:
         return [], locale.ERROR_FILE_NOT_FOUND
+
 
 def profile_option() -> Tuple[int, str, str]:
     username = get_profile()
     profile_data, message = open_profile(username)
     balance = int(profile_data[1][0])
     return balance, message, username
+
 
 def get_profile() -> str:
     message_string = locale.USERNAME_ENTER
@@ -64,6 +78,7 @@ def get_profile() -> str:
 
     return username
 
+
 def get_valid_input(prompt: str) -> str:
     while True:
         user_input = input(prompt).lower().strip()
@@ -72,6 +87,7 @@ def get_valid_input(prompt: str) -> str:
             return user_input
         else:
             print(locale.USERNAME_INVALID_INPUT)
+
 
 def open_profile(username: str) -> Tuple[List[List[str]], str]:
     profile_data, message = read_profile_file(username)
