@@ -35,6 +35,8 @@ Instructions
         - Amount will be shown for informative reasons, it will not be added automatically
 
     * Forecast
+
+            Choose 'real' to work with saved values or custom to enter new values 
         * Date when wanted savings amount could be reached
             * Enter the wanted amount in savings
             * Message with amount & date will be printed out  
