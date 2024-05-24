@@ -6,6 +6,7 @@ from scr.menu.utilities import menu_compiler
 from scr.menu.username import read_profile_file
 from typing import List, Optional
 
+
 class Balance:
     def __init__(self, username: str) -> None:
         self.username = username
@@ -15,10 +16,11 @@ class Balance:
         base_path = os.path.dirname(os.path.abspath(__file__))
         data_path = os.path.join(base_path, "..", "..", "data")
         self.profile_file_path = os.path.join(data_path, f"user_{self.username}.csv")
-        self.transactions_file_path = os.path.join(data_path, f"{self.username}_transactions.csv")
+        self.transactions_file_path = os.path.join(
+            data_path, f"{self.username}_transactions.csv"
+        )
         self.transactions_data = read_profile_file(self.username, transactions=True)[0]
 
-    
     def balance_menu(self, message: Optional[str] = None) -> None:
         modes = locale.BALANCE_MODES
         balance_title = locale.BALANCE_TITLE
@@ -29,6 +31,7 @@ class Balance:
 
     def select_balance_mode(self, mode: str) -> None:
         from scr.menu.savings import Savings
+
         match mode:
             case _ if mode in locale.BALANCE_MODE_1:
                 message_string = self.validate_transaction()
@@ -61,7 +64,7 @@ class Balance:
             return locale.BACK
 
         try:
-            self.amount  = int(amount)
+            self.amount = int(amount)
         except ValueError:
             return locale.BALANCE_ERROR_VALIDATE
 
@@ -71,6 +74,7 @@ class Balance:
             message_string = self.income(self.amount)
 
         return message_string
+
     def income(self, n: int) -> str:
         self.balance += n
         self.update_balance_savings("balance")

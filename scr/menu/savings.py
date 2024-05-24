@@ -5,6 +5,7 @@ from scr.menu.username import read_profile_file
 from scr.menu.forecast import forecast_menu
 from typing import Optional, Union
 
+
 class Savings:
     def __init__(self, username: str) -> None:
         self.username = username
@@ -12,6 +13,7 @@ class Savings:
         self.savings = int(self.profile_data[1][1])
         self.balance = int(self.profile_data[1][0])
         from scr.menu.balance import Balance
+
         self.Balance = Balance(self.username)
         self.transactions_data = read_profile_file(self.username, transactions=True)[0]
 
@@ -54,8 +56,12 @@ class Savings:
                 self.savings += self.amount
                 self.balance -= self.amount
                 message = str(self.amount) + locale.SAVINGS_ADDED_BALANCE_REMOVED
-                self.Balance.add_transactions(transaction_mode="savings", amount=self.amount)
-                self.Balance.add_transactions(transaction_mode="balance", amount=-self.amount)
+                self.Balance.add_transactions(
+                    transaction_mode="savings", amount=self.amount
+                )
+                self.Balance.add_transactions(
+                    transaction_mode="balance", amount=-self.amount
+                )
         elif n == locale.WITHDRAW:
             self.amount = int(input(locale.SAVINGS_AMOUNT_WITHDRAW))
             if self.amount > self.savings:
@@ -64,9 +70,13 @@ class Savings:
                 self.savings -= self.amount
                 self.balance += self.amount
                 message = str(self.amount) + locale.SAVINGS_REMOVED_BALANCE_ADDED
-                self.Balance.add_transactions(transaction_mode="balance", amount=self.amount)
+                self.Balance.add_transactions(
+                    transaction_mode="balance", amount=self.amount
+                )
                 self.amount = -self.amount
-                self.Balance.add_transactions(transaction_mode="savings", amount=self.amount)
+                self.Balance.add_transactions(
+                    transaction_mode="savings", amount=self.amount
+                )
         else:
             message = locale.ERROR_WRONG_INPUT
 
@@ -91,7 +101,9 @@ class Savings:
             if savings_goal_percent == locale.BACK:
                 self.savings_menu()
             monthly_income = self.get_transaction_amount("income")
-            monthly_savings_goal = float(monthly_income * (float(savings_goal_percent) / 100))
+            monthly_savings_goal = float(
+                monthly_income * (float(savings_goal_percent) / 100)
+            )
             return monthly_savings_goal
         except ValueError:
             message = locale.ERROR_WRONG_INPUT
@@ -111,7 +123,5 @@ class Savings:
             percentage_achieved = float((monthly_savings / monthly_savings_goal) * 100)
         except ZeroDivisionError:
             return locale.ERROR_INCOME_ZERO
-        message = (
-            f"{locale.SAVINGS_THIS_MONTH}: {monthly_savings} | {locale.SAVINGS_GOALS_MESSAGE}: {monthly_savings_goal:.2f} | {locale.SAVINGS_ACHIEVED}: {percentage_achieved:.2f}%"
-        )
+        message = f"{locale.SAVINGS_THIS_MONTH}: {monthly_savings} | {locale.SAVINGS_GOALS_MESSAGE}: {monthly_savings_goal:.2f} | {locale.SAVINGS_ACHIEVED}: {percentage_achieved:.2f}%"
         return message
