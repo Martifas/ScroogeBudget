@@ -37,7 +37,7 @@ def case_changer() -> str:
     return message
 
 
-def message_compiler(message_string: str) -> str:
+def message_compiler(message_string: str,) -> str:
     global separator, case_chgr
     if case_chgr == "upper":
         message_string = message_string.upper()

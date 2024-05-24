@@ -146,7 +146,7 @@ class Balance:
                 transaction_found = True
                 break
         if not transaction_found:
-            rows.append(["balance", current_date, str(temporary_amount)])
+            rows.append(["balance", current_date, str(n)])
         with open(self.transactions_file_path, "w", newline="") as write_file:
             writer = csv.writer(write_file)
             writer.writerows(rows)
