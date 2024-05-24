@@ -7,6 +7,12 @@ case_chgr = "upper"
 
 
 def select_separator() -> str:
+    """
+    Prompt the user to select a separator character for the menu.
+
+    Returns:
+        str: A message indicating the selected separator or an error message if an invalid separator is entered.
+    """
     global separator
     user_input = input(locale.UTILITIES_SEPARATOR_INPUT)
     separator_match = re.search(r"^.$", user_input)
@@ -20,6 +26,12 @@ def select_separator() -> str:
 
 
 def case_changer() -> str:
+    """
+    Prompt the user to select the case style for the messages (lowercase, uppercase, or titlecase).
+
+    Returns:
+        str: A message indicating the selected case style or an error message if an invalid case style is entered.
+    """
     global case_chgr
     case = input(locale.UTILITIES_CASE_INPUT).lower()
     if case == locale.UTILITIES_LOWERCASE:
@@ -38,6 +50,15 @@ def case_changer() -> str:
 
 
 def message_compiler(message_string: str) -> str:
+    """
+    Compile the message string with the selected case style and separator.
+
+    Args:
+        message_string (str): The message string to be compiled.
+
+    Returns:
+        str: The compiled message string with the selected case style and separator.
+    """
     global separator, case_chgr
     if case_chgr == "upper":
         message_string = message_string.upper()
@@ -50,6 +71,17 @@ def message_compiler(message_string: str) -> str:
 
 
 def menu_compiler(modes, output_string, message=None) -> str:
+    """
+    Compile the menu options and display the menu.
+
+    Args:
+        modes: The list of menu options.
+        output_string: The output string for the menu.
+        message (optional): An optional message to be displayed with the menu.
+
+    Returns:
+        str: The user's selected mode.
+    """
     output = [message_compiler(output_string)]
     for index, value in enumerate(modes, start=1):
         output.append(f"{index}. {value}")

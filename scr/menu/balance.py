@@ -8,7 +8,19 @@ from typing import List, Optional
 
 
 class Balance:
+    """
+    Represents the balance functionality of the ScroogeBudget application.
+    It manages income, expenses, and current balance for a specific user.
+    """
+    
     def __init__(self, username: str) -> None:
+        """
+        Initializes a new instance of the Balance class.
+        
+        Args:
+            username (str): The username of the user.
+        """
+        
         self.username = username
         self.profile_data: List[List[str]] = read_profile_file(self.username)[0]
         self.savings = int(self.profile_data[1][1])
@@ -22,6 +34,13 @@ class Balance:
         self.transactions_data = read_profile_file(self.username, transactions=True)[0]
 
     def balance_menu(self, message: Optional[str] = None) -> None:
+        """
+        Displays the balance menu and handles user input.
+        
+        Args:
+            message (Optional[str], optional): A message to display to the user. Defaults to None.
+        """
+        
         modes = locale.BALANCE_MODES
         balance_title = locale.BALANCE_TITLE
         mode = menu_compiler(modes, balance_title, message)
@@ -30,6 +49,12 @@ class Balance:
         self.select_balance_mode(mode)
 
     def select_balance_mode(self, mode: str) -> None:
+        """
+        Selects the appropriate action based on the user's selected mode in the balance menu.
+        
+        Args:
+            mode (str): The user's selected mode.
+        """
         from scr.menu.savings import Savings
 
         match mode:
@@ -52,6 +77,12 @@ class Balance:
             self.balance_menu(message_string)
 
     def validate_transaction(self) -> str:
+        """
+        Validates the user's input for a transaction (income or expense).
+        
+        Returns:
+            str: A message indicating the result of the transaction validation.
+        """
         transaction_mode = input(locale.INCOME_EXPENSE).lower().strip()
         if transaction_mode == locale.BACK:
             return locale.BACK
@@ -76,6 +107,15 @@ class Balance:
         return message_string
 
     def income(self, n: int) -> str:
+        """
+        Records an income transaction and updates the balance.
+        
+        Args:
+            n (int): The amount of income.
+        
+        Returns:
+            str: A message confirming the income deposit.
+        """
         self.balance += n
         self.update_balance_savings("balance")
         self.add_transactions("income", n)
@@ -84,6 +124,16 @@ class Balance:
         return message_string
 
     def expense(self, n: int) -> str:
+        """
+        Records an expense transaction and updates the balance.
+        
+        Args:
+            n (int): The amount of expense.
+        
+        Returns:
+            str: A message confirming the expense withdrawal or indicating insufficient balance.
+        """
+        
         if n > self.balance:
             message_string: str = locale.BALANCE_TOO_LOW + str(self.balance)
         else:
@@ -96,6 +146,13 @@ class Balance:
         return message_string
 
     def update_balance_savings(self, n: str) -> None:
+        """
+        Updates the balance or savings amount in the user's profile file.
+        
+        Args:
+            n (str): Indicates whether to update the balance or savings amount.
+        """
+        
         with open(self.profile_file_path, "r", newline="") as file:
             reader = csv.reader(file)
             rows = list(reader)
@@ -108,6 +165,13 @@ class Balance:
                 writer.writerows(rows)
 
     def add_transactions(self, transaction_mode: str, amount: int) -> None:
+        """
+        Adds a transactions to the user's transactions file.
+        
+        Args:
+            transaction_mode (str): The type of transaction.
+            amount (int): The amount of the transaction.
+        """
         current_date = datetime.date.today().strftime(locale.YEAR_MONTH)
         transaction_found: bool = False
         try:
@@ -130,6 +194,13 @@ class Balance:
             writer.writerows(rows)
 
     def update_balance_in_transactions(self, n: int) -> None:
+        """
+        Updates the balance in the user's transactions file.
+        
+        Args:
+            n (int): The amount to update the balance by.
+        """
+        
         current_date = datetime.date.today().strftime(locale.YEAR_MONTH)
         transaction_found: bool = False
         try:

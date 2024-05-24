@@ -9,6 +9,15 @@ username = None
 
 
 def menu_handling(message: str = None, username: str = None) -> None:
+    """
+    Handles the main menu navigation and user input.
+    Displays the menu options and calls the appropriate functions based on user selection.
+    
+    Args:
+        message (str, optional): A message to display to the user. Defaults to None.
+        username (str, optional): The username of the currently logged-in user. Defaults to None.
+    """
+    
     modes = locale.MENU_HANDLING_MODES
 
     while True:
@@ -27,6 +36,16 @@ def menu_handling(message: str = None, username: str = None) -> None:
 
 
 def menu(message: str = None) -> str:
+    """
+    Displays the main menu options and prompts the user for input.
+    
+    Args:
+        message (str, optional): A message to display to the user. Defaults to None.
+        
+    Returns:
+        str: The user's selected mode.
+    """
+    
     modes = locale.MENU_MODES
     title = locale.MENU_TITLE
     mode = menu_compiler(modes, title, message)
@@ -34,6 +53,14 @@ def menu(message: str = None) -> str:
 
 
 def mode_select(mode: str, username: str = None) -> None:
+    """
+    Selects the appropriate action based on the user's selected mode.
+    
+    Args:
+        mode (str): The user's selected mode.
+        username (str, optional): The username of the currently logged-in user. Defaults to None.
+    """
+    
     global balance
 
     match mode:
@@ -54,6 +81,15 @@ def mode_select(mode: str, username: str = None) -> None:
 
 
 def options(username) -> str:
+    """
+    Displays the options menu and handles user input.
+    
+    Args:
+        username (str): The username of the currently logged-in user.
+        
+    Returns:
+        str: A message indicating the result of the selected option.
+    """
     modes = locale.OPTIONS_MODES
     title = locale.OPTIONS_TITLE
     mode = menu_compiler(modes, title)

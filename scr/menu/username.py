@@ -8,11 +8,23 @@ from scr.menu.utilities import message_compiler
 
 
 def get_data_path() -> str:
+    """
+    Get the path to the data directory.
+
+    Returns:
+        str: The path to the data directory.
+    """
     base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, "..", "..", "data")
 
 
 def create_profile_file(username: str) -> None:
+    """
+    Create a new profile file and transactions file for the specified username.
+
+    Args:
+        username (str): The username for which the profile and transactions files will be created.
+    """
     data_path = get_data_path()
     profile_file_path = os.path.join(data_path, f"user_{username}.csv")
     transactions_file_path = os.path.join(data_path, f"{username}_transactions.csv")
@@ -35,6 +47,17 @@ def create_profile_file(username: str) -> None:
 def read_profile_file(
     username: str, transactions: bool = False
 ) -> Tuple[List[List[str]], str]:
+    """
+    Read the profile file or transactions file for the specified username.
+
+    Args:
+        username (str): The username for which the profile or transactions file will be read.
+        transactions (bool): Flag indicating whether to read the transactions file (True) or the profile file (False).
+
+    Returns:
+        Tuple[List[List[str]], str]: A tuple containing the profile or transactions data as a list of lists,
+                                     and a message indicating the success or failure of the file read operation.
+    """
     data_path = get_data_path()
     file_path = os.path.join(
         data_path,
@@ -57,6 +80,13 @@ def read_profile_file(
 
 
 def profile_option() -> Tuple[int, str, str]:
+    """
+    Get the user's profile information.
+
+    Returns:
+        Tuple[int, str, str]: A tuple containing the user's balance, a message indicating the success or failure
+                              of opening the profile, and the username.
+    """
     username = get_profile()
     profile_data, message = open_profile(username)
     balance = int(profile_data[1][0])
@@ -64,6 +94,12 @@ def profile_option() -> Tuple[int, str, str]:
 
 
 def get_profile() -> str:
+    """
+    Prompt the user to enter a valid username.
+
+    Returns:
+        str: The entered username.
+    """
     message_string = locale.USERNAME_ENTER
     print(message_compiler(message_string))
 
@@ -80,6 +116,15 @@ def get_profile() -> str:
 
 
 def get_valid_input(prompt: str) -> str:
+    """
+    Prompt the user for a valid input based on the specified prompt.
+
+    Args:
+        prompt (str): The prompt to display to the user.
+
+    Returns:
+        str: The user's valid input.
+    """
     while True:
         user_input = input(prompt).lower().strip()
 
@@ -90,6 +135,16 @@ def get_valid_input(prompt: str) -> str:
 
 
 def open_profile(username: str) -> Tuple[List[List[str]], str]:
+    """
+    Open the profile file for the specified username or create a new profile if it doesn't exist.
+
+    Args:
+        username (str): The username for which the profile file will be opened or created.
+
+    Returns:
+        Tuple[List[List[str]], str]: A tuple containing the profile data as a list of lists,
+                                     and a message indicating the success or failure of opening the profile.
+    """
     profile_data, message = read_profile_file(username)
 
     if message == locale.ERROR_FILE_NOT_FOUND:

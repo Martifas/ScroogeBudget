@@ -27,6 +27,15 @@ def forecast_menu(username: str, message: str = None) -> str:
 
 
 def forecast_date(username: str) -> str:
+    """
+    Forecast the date when the user will reach their desired savings amount.
+
+    Args:
+        username (str): The username of the user.
+
+    Returns:
+        str: A message indicating the forecasted date or an error message.
+    """
     savings_monthly_average, existing_savings = real_or_custom(username)
     if savings_monthly_average is None or existing_savings is None:
         message = locale.FORECAST_ERROR_NO_DATA
@@ -55,6 +64,15 @@ def forecast_date(username: str) -> str:
 
 
 def forecast_amount(username: str) -> str:
+    """
+    Forecast the savings amount on a specific target date.
+
+    Args:
+        username (str): The username of the user.
+
+    Returns:
+        str: A message indicating the forecasted savings amount or an error message.
+    """
     savings_monthly_average, existing_savings = real_or_custom(username)
     if savings_monthly_average is None or existing_savings is None:
         message = locale.FORECAST_ERROR_NO_DATA
@@ -84,6 +102,16 @@ def forecast_amount(username: str) -> str:
 
 
 def get_savings_data(username: str) -> tuple:
+    """
+    Retrieve the user's savings data from their transactions file.
+
+    Args:
+        username (str): The username of the user.
+
+    Returns:
+        tuple: A tuple containing the average monthly savings and the existing savings amount,
+               or (None, None) if no savings data is found.
+    """
     transactions_data = read_profile_file(username, transactions=True)[0]
     if not transactions_data:
         return None, None
@@ -96,6 +124,15 @@ def get_savings_data(username: str) -> tuple:
 
 
 def real_or_custom(username: str) -> int:
+    """
+    Prompt the user to choose between using real savings data or entering custom data for forecasting.
+
+    Args:
+        username (str): The username of the user.
+
+    Returns:
+        int: A tuple containing the average monthly savings and the existing savings amount.
+    """
     while True:
         real_custom = input(locale.FORECAST_REAL_CUSTOM).strip().lower()
         if real_custom == "1":

@@ -7,6 +7,10 @@ from typing import Optional, Union
 
 
 class Savings:
+    """
+    Represents the savings functionality.
+    It manages savings balance, deposits, withdrawals, and savings goals for a specific user.
+    """
     def __init__(self, username: str) -> None:
         self.username = username
         self.profile_data = read_profile_file(self.username)[0]
@@ -18,6 +22,12 @@ class Savings:
         self.transactions_data = read_profile_file(self.username, transactions=True)[0]
 
     def savings_menu(self, message: Optional[str] = None) -> None:
+        """
+        Displays the savings menu and handles user input.
+
+        Args:
+            message (Optional[str], optional): A message to display to the user. Defaults to None.
+        """
         modes = locale.SAVINGS_MODES
         savings_title: str = locale.SAVINGS_TITLE
         mode = menu_compiler(modes, savings_title, message)
@@ -27,6 +37,12 @@ class Savings:
             self.select_savings_mode(mode)
 
     def select_savings_mode(self, mode: str) -> None:
+        """
+        Selects the appropriate action based on the user's selected mode in the savings menu.
+
+        Args:
+            mode (str): The user's selected mode.
+        """
         match mode:
             case _ if mode in locale.SAVINGS_MODE_1:
                 message: str = self.savings_deposit_withdraw()
@@ -45,6 +61,13 @@ class Savings:
             self.savings_menu(message)
 
     def savings_deposit_withdraw(self) -> str:
+        """
+        Handles the deposit or withdrawal of funds from the user's savings account.
+
+        Returns:
+            str: A message indicating the result of the deposit or withdrawal.
+        """
+        
         n = input(locale.SAVINGS_DEPOSIT_WITHDRAW).strip().lower()
         if n == locale.BACK:
             self.savings_menu()
@@ -87,6 +110,16 @@ class Savings:
         return message
 
     def get_transaction_amount(self, mode: str) -> Union[str, int]:
+        """
+        Retrieves the transaction amount for a specific mode (e.g., income or savings) in the current month.
+
+        Args:
+            mode (str): The mode of the transaction (e.g., income or savings).
+
+        Returns:
+            Union[str, int]: The transaction amount if found, or an error message if no data is available.
+        """
+        
         current_month = datetime.date.today().strftime(locale.YEAR_MONTH)
         for row in self.transactions_data:
             if row[0] == mode and row[1] == current_month:
@@ -96,6 +129,13 @@ class Savings:
         return message
 
     def goal_getter(self) -> Optional[int]:
+        """
+        Prompts the user to enter a savings goal percentage and calculates the monthly savings goal.
+
+        Returns:
+            Optional[int]: The calculated monthly savings goal, or None if an invalid input is provided.
+        """
+        
         try:
             savings_goal_percent = input(locale.SAVINGS_GOAL_PERCENTAGE)
             if savings_goal_percent == locale.BACK:
@@ -111,6 +151,13 @@ class Savings:
             return None
 
     def calculate_savings(self) -> str:
+        """
+        Calculates the user's savings progress based on their monthly savings goal and actual savings.
+
+        Returns:
+            str: A message indicating the user's savings progress, including the amount saved,
+                the savings goal, and the percentage achieved.
+        """
         monthly_savings_goal = self.goal_getter()
         if monthly_savings_goal is None:
             return locale.ERROR_WRONG_INPUT
