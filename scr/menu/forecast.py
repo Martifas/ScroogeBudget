@@ -25,7 +25,7 @@ def forecast_menu(username: str, message: str = None) -> str:
             return result
 
 def forecast_date(username: str) -> str:
-    savings_monthly_average, existing_savings = get_savings_data(username)
+    savings_monthly_average, existing_savings = real_or_custom(username)
     if savings_monthly_average is None or existing_savings is None:
         message = locale.FORECAST_ERROR_NO_DATA
         return message
@@ -50,7 +50,7 @@ def forecast_date(username: str) -> str:
     return message
 
 def forecast_amount(username: str) -> str:
-    savings_monthly_average, existing_savings = get_savings_data(username)
+    savings_monthly_average, existing_savings = real_or_custom(username)
     if savings_monthly_average is None or existing_savings is None:
         message = locale.FORECAST_ERROR_NO_DATA
         return message
@@ -83,3 +83,16 @@ def get_savings_data(username: str) -> tuple:
     savings_monthly_average = np.mean(savings_data)
     existing_savings = int(read_profile_file(username)[0][1][1])
     return savings_monthly_average, existing_savings
+
+def real_or_custom(username: str) -> int:
+    while True:
+        real_custom = input(locale.FORECAST_REAL_CUSTOM).strip().lower()
+        if real_custom == "1":
+            savings_monthly_average, existing_savings = get_savings_data(username)
+        elif real_custom == "2":
+            savings_monthly_average = int(input(locale.FORECAST_SAVINGS_EVERY_MONTH))
+            existing_savings = int(input(locale.FORECAST_SAVINGS_NOW))
+        else: 
+            print(locale.ERROR_WRONG_INPUT)
+            continue
+        return savings_monthly_average, existing_savings

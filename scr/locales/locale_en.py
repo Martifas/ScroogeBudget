@@ -54,6 +54,9 @@ FORECAST_SAVINGS = "your forecasted savings amount on "
 FORECAST_IS_APPROXIMATELY = "is approximately"
 FORECAST_IN = "in"
 FORECAST_MONTHS = "months"
+FORECAST_REAL_CUSTOM = "Would you like to forecast base on existing data(1) or enter custom data(2)? "
+FORECAST_SAVINGS_EVERY_MONTH = "How much would you save every month? "
+FORECAST_SAVINGS_NOW = "How much savings do you have now? "
 
 MAIN_EXIT = "|PROGRAM CLOSED|"
 
