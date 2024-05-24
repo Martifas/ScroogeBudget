@@ -22,12 +22,6 @@ class Savings:
         self.transactions_data = read_profile_file(self.username, transactions=True)[0]
 
     def savings_menu(self, message: Optional[str] = None) -> None:
-        """
-        Displays the savings menu and handles user input.
-
-        Args:
-            message (Optional[str], optional): A message to display to the user. Defaults to None.
-        """
         modes = locale.SAVINGS_MODES
         savings_title: str = locale.SAVINGS_TITLE
         mode = menu_compiler(modes, savings_title, message)
@@ -37,12 +31,6 @@ class Savings:
             self.select_savings_mode(mode)
 
     def select_savings_mode(self, mode: str) -> None:
-        """
-        Selects the appropriate action based on the user's selected mode in the savings menu.
-
-        Args:
-            mode (str): The user's selected mode.
-        """
         match mode:
             case _ if mode in locale.SAVINGS_MODE_1:
                 message: str = self.savings_deposit_withdraw()
@@ -66,8 +54,7 @@ class Savings:
 
         Returns:
             str: A message indicating the result of the deposit or withdrawal.
-        """
-        
+        """        
         n = input(locale.SAVINGS_DEPOSIT_WITHDRAW).strip().lower()
         if n == locale.BACK:
             self.savings_menu()
@@ -118,8 +105,7 @@ class Savings:
 
         Returns:
             Union[str, int]: The transaction amount if found, or an error message if no data is available.
-        """
-        
+        """        
         current_month = datetime.date.today().strftime(locale.YEAR_MONTH)
         for row in self.transactions_data:
             if row[0] == mode and row[1] == current_month:

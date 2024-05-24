@@ -13,14 +13,7 @@ class Balance:
     It manages income, expenses, and current balance for a specific user.
     """
     
-    def __init__(self, username: str) -> None:
-        """
-        Initializes a new instance of the Balance class.
-        
-        Args:
-            username (str): The username of the user.
-        """
-        
+    def __init__(self, username: str) -> None:        
         self.username = username
         self.profile_data: List[List[str]] = read_profile_file(self.username)[0]
         self.savings = int(self.profile_data[1][1])
@@ -33,14 +26,7 @@ class Balance:
         )
         self.transactions_data = read_profile_file(self.username, transactions=True)[0]
 
-    def balance_menu(self, message: Optional[str] = None) -> None:
-        """
-        Displays the balance menu and handles user input.
-        
-        Args:
-            message (Optional[str], optional): A message to display to the user. Defaults to None.
-        """
-        
+    def balance_menu(self, message: Optional[str] = None) -> None:        
         modes = locale.BALANCE_MODES
         balance_title = locale.BALANCE_TITLE
         mode = menu_compiler(modes, balance_title, message)
@@ -49,12 +35,6 @@ class Balance:
         self.select_balance_mode(mode)
 
     def select_balance_mode(self, mode: str) -> None:
-        """
-        Selects the appropriate action based on the user's selected mode in the balance menu.
-        
-        Args:
-            mode (str): The user's selected mode.
-        """
         from scr.menu.savings import Savings
 
         match mode:

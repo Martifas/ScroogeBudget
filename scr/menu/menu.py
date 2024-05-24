@@ -35,32 +35,14 @@ def menu_handling(message: str = None, username: str = None) -> None:
         break
 
 
-def menu(message: str = None) -> str:
-    """
-    Displays the main menu options and prompts the user for input.
-    
-    Args:
-        message (str, optional): A message to display to the user. Defaults to None.
-        
-    Returns:
-        str: The user's selected mode.
-    """
-    
+def menu(message: str = None) -> str:    
     modes = locale.MENU_MODES
     title = locale.MENU_TITLE
     mode = menu_compiler(modes, title, message)
     return mode
 
 
-def mode_select(mode: str, username: str = None) -> None:
-    """
-    Selects the appropriate action based on the user's selected mode.
-    
-    Args:
-        mode (str): The user's selected mode.
-        username (str, optional): The username of the currently logged-in user. Defaults to None.
-    """
-    
+def mode_select(mode: str, username: str = None) -> None:    
     global balance
 
     match mode:
